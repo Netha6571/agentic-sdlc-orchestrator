@@ -7,3 +7,8 @@ Cycle 2 - LLM Client
 - Spec: 03
 - Prompt: Read specs/03-agents-and-llm.md, the language model section. Generate only the llm package: an LlmClient interface, an LlmException, a StubLlmClient (offline, deterministic, with a switch to fail on purpose), and an GoogleAdkLlmClient. Do not touch the agents yet. Do not add an SDK dependency
 - Outcome: GoogleAdkLlmClient.java, LlmClient.java, LlmException.java, StubLlmClient.java
+
+Cycle 3 - Agent
+- Spec: 03
+- Prompt: Read specs/03-agents-and-llm.md in full. Generate the agent package: the Agent interface, an AbstractAgent base class holding the try-LLM-then-fallback pattern once, and the six agents (requirement, design, implement, test, docs, release). Every agent must have a fallback that returns real valid output, not a stub that throws. Implement and release are marked as needing approval. Depend only on the model and llm packages already built
+- Outcome: Agent.java, AbstractAgent.java, RequirementsAgent.java, DesignAgent.java, ImplementationAgent.java, TestAgent.java, DocsAgent.java, ReleaseAgent.java
