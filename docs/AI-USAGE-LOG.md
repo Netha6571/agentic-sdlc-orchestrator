@@ -33,3 +33,12 @@ Cycle 7 - CLI
 - Prompt: Read specs/05-build-and-run.md. Generate the cli Main class: parse flags (real vs stub model, interactive vs auto approval, force-fail), take the requirement as the last non-flag argument, wire everything, run the engine, and print final stage states, the decision lineage, the confidence score with its signals, and the metrics summary
 - Outcome: Main.java
 
+
+Cycle 8 - External Codebase as reference
+- Prompt: Generate CodebaseService abstraction that agents call into to look at the external codebase via file system for now and the ImplementationAgent uses it read the codebase and look at the prompt add what code needs to be added/updated/removed.
+Notes: Prompt did not update the README with the external codebase reference automatically.
+- Outcome: FileSystemCodebaseService.java, CodebaseService.java
+
+
+Cycle 9 - Update ReadME
+- Prompt: Look at the codebase end to end and update the read me file with the details and also include a high level architecture diagram

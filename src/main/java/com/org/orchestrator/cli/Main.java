@@ -1,5 +1,7 @@
 package com.org.orchestrator.cli;
 
+import com.org.orchestrator.codebase.CodebaseService;
+import com.org.orchestrator.codebase.FileSystemCodebaseService;
 import com.org.orchestrator.engine.Dag;
 import com.org.orchestrator.engine.WorkflowEngine;
 import com.org.orchestrator.engine.Workflows;
@@ -14,6 +16,7 @@ import com.org.orchestrator.model.StageId;
 import com.org.orchestrator.model.StageState;
 import com.org.orchestrator.model.WorkflowContext;
 
+import java.nio.file.Path;
 import java.util.Map;
 
 /**
@@ -21,6 +24,7 @@ import java.util.Map;
  * builds the graph, runs the engine, and prints the four output sections.
  *
  * Flags:
+ *   --repo <path>    Point the orchestrator at an external codebase.
  *   --real-model     Use the Google ADK client (needs GOOGLE_API_KEY).
  *   --interactive    Ask for approval on the console at high-impact stages.
  *   --force-fail     Make the stub model fail on purpose (shows fallback).
@@ -37,13 +41,22 @@ public final class Main {
         boolean interactive  = false;
         boolean forceFail    = false;
         String requirement   = null;
+        String repoPath      = null;
 
-        for (String arg : args) {
-            switch (arg) {
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
                 case "--real-model"  -> useRealModel = true;
                 case "--interactive" -> interactive  = true;
                 case "--force-fail"  -> forceFail    = true;
-                default             -> requirement   = arg;
+                case "--repo"       -> {
+                    if (i + 1 < args.length) {
+                        repoPath = args[++i];
+                    } else {
+                        System.err.println("--repo requires a path argument");
+                        System.exit(1);
+                    }
+                }
+                default             -> requirement   = args[i];
             }
         }
 
@@ -60,18 +73,28 @@ public final class Main {
             llmClient = new StubLlmClient(forceFail);
         }
 
+        CodebaseService codebaseService = null;
+        if (repoPath != null) {
+            codebaseService = new FileSystemCodebaseService(Path.of(repoPath));
+        }
+
         ApprovalGate gate = interactive
                 ? ApprovalGate.console()
                 : ApprovalGate.autoApprove();
 
         RunMetrics metrics = new RunMetrics();
-        Dag dag = Workflows.standard(llmClient);
+        Dag dag = Workflows.standard(llmClient, codebaseService);
         WorkflowEngine engine = new WorkflowEngine(dag, gate, metrics);
         WorkflowContext context = new WorkflowContext(requirement);
 
         System.out.println("=== Agentic SDLC Orchestrator ===");
         System.out.println("Model:       " + llmClient.name());
         System.out.println("Approval:    " + (interactive ? "console (interactive)" : "auto-approve"));
+        if (codebaseService != null) {
+            System.out.println("Target repo: " + codebaseService.rootPath());
+        } else {
+            System.out.println("Target repo: (none — prompt-only mode)");
+        }
         System.out.println("Requirement: " + requirement);
         System.out.println();
 

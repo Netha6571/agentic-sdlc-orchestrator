@@ -6,6 +6,7 @@ import com.org.orchestrator.agent.ImplementAgent;
 import com.org.orchestrator.agent.ReleaseAgent;
 import com.org.orchestrator.agent.RequirementAgent;
 import com.org.orchestrator.agent.TestAgent;
+import com.org.orchestrator.codebase.CodebaseService;
 import com.org.orchestrator.llm.LlmClient;
 
 import java.util.List;
@@ -32,8 +33,18 @@ public final class Workflows {
 
     /**
      * Build the standard SDLC workflow with all six stages wired.
+     * No codebase context — agents work from the prompt only.
      */
     public static Dag standard(LlmClient llmClient) {
+        return standard(llmClient, null);
+    }
+
+    /**
+     * Build the standard SDLC workflow with codebase access.
+     * When codebaseService is non-null, agents that support it
+     * (currently ImplementAgent) will read the target project.
+     */
+    public static Dag standard(LlmClient llmClient, CodebaseService codebaseService) {
         Stage requirement = new Stage(
                 new RequirementAgent(llmClient),
                 Set.of(),                       // first stage — no dependencies
@@ -49,7 +60,7 @@ public final class Workflows {
                 false);
 
         Stage implement = new Stage(
-                new ImplementAgent(llmClient),
+                new ImplementAgent(llmClient, codebaseService),
                 Set.of(DesignAgent.ID),         // depends on design
                 null,
                 DEFAULT_RETRIES,
