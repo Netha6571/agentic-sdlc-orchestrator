@@ -17,3 +17,8 @@ Cycle 4 - Graph
 - Spec: 01, 02
 - Prompt: Read specs/01-architecture.md and specs/02-engine.md, the graph parts only. Generate the engine package's graph types: Stage (agent, dependencies, entry check, retry budget, approval flag) and Dag (validates that dependencies exist and rejects cycles on construction). Also generate the Workflows factory that wires the six stages so test and docs both depend only on implement. Do not write the WorkflowEngine yet.
 - Outcome: Dag.java, Stage.java, Workflows.java
+
+Cycle 5 - Governance
+- Spec: 04
+- Prompt: Read specs/04-governance.md. Generate the governance package: RunMetrics (success rate, retries, rollbacks, fallbacks, MTTR, total time), ApprovalGate (an interface with an auto-approve version and a console version), and ConfidenceScore computed from run outcomes using the exact formula in the spec — never a number the model reports. Depend only on the model package
+- Outcome: ApprovalGate.java, ConfidenceScore.java, RunMetrics.java
