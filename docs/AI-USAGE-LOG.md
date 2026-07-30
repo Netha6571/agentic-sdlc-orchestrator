@@ -42,3 +42,34 @@ Notes: Prompt did not update the README with the external codebase reference aut
 
 Cycle 9 - Update ReadME
 - Prompt: Look at the codebase end to end and update the read me file with the details and also include a high level architecture diagram
+
+
+Cycle 10 - Add Junit
+- Prompt: Write a JUnit 5 test suite for the workflow engine in this project. The goal is to prove the engine's orchestration behavior is correct, not just that classes exist. Test the real behavior a reviewer would want to see verified.
+
+Use the stub LLM client for all tests so they run offline with no API key and are fully repeatable. Do not call the real model. Where you need agents, use the existing stub-backed agents or small fake agents you write in the test, whichever keeps the test clear.
+
+Cover these behaviors, one or more tests each:
+
+The engine runs stages in dependency order. A stage does not start until the stages it depends on have passed.
+
+Independent stages run in parallel. Set up two stages that both depend only on one earlier stage, and confirm the engine runs them together rather than one after the other. Also confirm a later stage that depends on both waits for both to finish before it starts.
+
+A stage that fails after using up its retry budget causes the run to stop safely. Its dependent stages never run, and the run reports that it stopped rather than finishing.
+
+The retry budget works. A stage that fails once but is allowed one retry, and succeeds on the retry, ends up passing. Confirm the retry was actually used.
+
+The fallback path works. When the model call fails, the agent still returns valid output, the stage passes, and the result is recorded as coming from the fallback, not the model.
+
+The approval gate halts a high-impact stage. With an approval gate that rejects, the implement stage does not pass and the branch stops. With an approval gate that approves, the stage passes and the run continues.
+
+The graph rejects a cycle. Building a dag where stages depend on each other in a loop fails fast with a clear error, rather than running forever.
+
+The run context records decisions in order. After a run, the context holds one entry per stage output, each with its stage, its source, and its timestamp, and they are in the order the stages ran.
+
+The metrics are correct. After a run with a known set of outcomes, the success rate, retry count, fallback count, and stage count match what actually happened.
+
+For each test, use a clear name that says what behavior it checks, arrange a small graph that isolates that one behavior, run the engine, and assert on the outcome. Keep each test focused on a single behavior so a failure points straight at the cause. Add short comments only where the setup is not obvious. Do not test getters or trivial data classes; test the engine's behavior.
+
+Put the tests under src/test/java in the matching package, and make sure they compile and pass with the stub client before finishing.
+Outcome: WorkflowEngineTest.java
