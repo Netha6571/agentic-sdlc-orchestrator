@@ -12,3 +12,8 @@ Cycle 3 - Agent
 - Spec: 03
 - Prompt: Read specs/03-agents-and-llm.md in full. Generate the agent package: the Agent interface, an AbstractAgent base class holding the try-LLM-then-fallback pattern once, and the six agents (requirement, design, implement, test, docs, release). Every agent must have a fallback that returns real valid output, not a stub that throws. Implement and release are marked as needing approval. Depend only on the model and llm packages already built
 - Outcome: Agent.java, AbstractAgent.java, RequirementsAgent.java, DesignAgent.java, ImplementationAgent.java, TestAgent.java, DocsAgent.java, ReleaseAgent.java
+
+Cycle 4 - Graph
+- Spec: 01, 02
+- Prompt: Read specs/01-architecture.md and specs/02-engine.md, the graph parts only. Generate the engine package's graph types: Stage (agent, dependencies, entry check, retry budget, approval flag) and Dag (validates that dependencies exist and rejects cycles on construction). Also generate the Workflows factory that wires the six stages so test and docs both depend only on implement. Do not write the WorkflowEngine yet.
+- Outcome: Dag.java, Stage.java, Workflows.java
