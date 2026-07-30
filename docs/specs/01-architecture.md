@@ -37,10 +37,10 @@ All code sits under `com.org.orchestrator`. Six packages:
 - `StubLlmClient` — an offline implementation that returns a fixed answer, so the
   whole engine runs with no key and no network. It has a failure mode you can turn
   on to show the fallback working.
-- `AnthropicLlmClient` — the real one. Calls the model over plain HTTP using the
-  built-in Java HTTP client. Reads the key from an environment variable and never
-  logs it. Has a timeout, so a slow model surfaces as a failure and the fallback
-  takes over instead of the run hanging.
+- `GoogleAdkLlmClient` — the real one. Calls the model through the Google ADK
+  (Agent Development Kit) using the built-in Java HTTP client. Reads the API key
+  from an environment variable and never logs it. Has a timeout, so a slow model
+  surfaces as a failure and the fallback takes over instead of the run hanging.
 
 ### agent
 
