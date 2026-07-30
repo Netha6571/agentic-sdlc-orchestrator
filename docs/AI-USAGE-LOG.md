@@ -22,3 +22,10 @@ Cycle 5 - Governance
 - Spec: 04
 - Prompt: Read specs/04-governance.md. Generate the governance package: RunMetrics (success rate, retries, rollbacks, fallbacks, MTTR, total time), ApprovalGate (an interface with an auto-approve version and a console version), and ConfidenceScore computed from run outcomes using the exact formula in the spec — never a number the model reports. Depend only on the model package
 - Outcome: ApprovalGate.java, ConfidenceScore.java, RunMetrics.java
+
+Cycle 6 - Engine
+- Spec: 02
+- Prompt: Read specs/02-engine.md in full. Generate the WorkflowEngine in the engine package. It keeps a state per stage, promotes stages to ready when dependencies pass and the entry check opens, runs the ready frontier in parallel on a small thread pool, joins before continuing, applies results (record to context, run approval gate if needed, bounded retries, safe-stop), and leaves clearly-commented seams for rollback and re-planning. The engine must contain no mention of URLs, the shortener, or any agent by name
+- Outcome: WorkflowEngine.java
+
+
