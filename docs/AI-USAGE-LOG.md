@@ -28,4 +28,8 @@ Cycle 6 - Engine
 - Prompt: Read specs/02-engine.md in full. Generate the WorkflowEngine in the engine package. It keeps a state per stage, promotes stages to ready when dependencies pass and the entry check opens, runs the ready frontier in parallel on a small thread pool, joins before continuing, applies results (record to context, run approval gate if needed, bounded retries, safe-stop), and leaves clearly-commented seams for rollback and re-planning. The engine must contain no mention of URLs, the shortener, or any agent by name
 - Outcome: WorkflowEngine.java
 
+Cycle 7 - CLI
+- Spec: 05
+- Prompt: Read specs/05-build-and-run.md. Generate the cli Main class: parse flags (real vs stub model, interactive vs auto approval, force-fail), take the requirement as the last non-flag argument, wire everything, run the engine, and print final stage states, the decision lineage, the confidence score with its signals, and the metrics summary
+- Outcome: Main.java
 
