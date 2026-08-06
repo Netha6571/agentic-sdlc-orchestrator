@@ -112,7 +112,7 @@ mvn exec:java
 ./build.sh
 
 # Direct
-java -cp build com.org.orchestrator.cli.Main
+java -cp build io.github.netha6571.orchestrator.cli.Main
 ```
 
 ### With a custom requirement
@@ -197,7 +197,7 @@ At the end of a run, the output includes:
 ## Package layout
 
 ```
-com.org.orchestrator
+io.github.netha6571.orchestrator
 ├── codebase    — CodebaseService interface + filesystem implementation
 ├── model       — plain data types (StageId, StageState, ArtifactSource, StageResult, WorkflowContext)
 ├── llm         — LLM client interface + stub + Google ADK implementation

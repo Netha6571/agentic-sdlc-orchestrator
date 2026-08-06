@@ -19,7 +19,7 @@
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>com.org.orchestrator.cli.Main</mainClass>
+        <mainClass>io.github.netha6571.orchestrator.cli.Main</mainClass>
     </properties>
 
     <dependencies>

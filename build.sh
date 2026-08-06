@@ -20,4 +20,4 @@ echo "Compiling..."
 javac --release 17 -d "$BUILD_DIR" $SOURCES
 
 echo "Running..."
-java -cp "$BUILD_DIR" com.org.orchestrator.cli.Main "$@"
+java -cp "$BUILD_DIR" io.github.netha6571.orchestrator.cli.Main "$@"
